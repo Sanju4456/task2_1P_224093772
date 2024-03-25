@@ -30,21 +30,23 @@ public class SeleniumOperations {
 	}
 	
 	
-	public static void officeworks_registration_page(String url) {
+	public static void officeworks_registration_page(String url) throws IOException {
 	    // Step 1: Locate chrome driver folder in the local drive.
 		System.setProperty("webdriver.chrome.driver",
-				"C:/Users/sanju/chromedriver-win64/chromedriver-win64/chromedriver.exe");
+				"C:/Users/sanju/chromedriver-win64 (1)/chromedriver-win64/chromedriver.exe");
 
 	    // Step 2: Use above chrome driver to open up a chromium browser.
 	    System.out.println("Fire up chrome browser.");
 	    WebDriver driver = new ChromeDriver();
-
+       
 	    System.out.println("Driver info: " + driver);
 
 	    sleep(2);
 
 	    // Load a webpage in chromium browser.
-	    driver.get(url);
+	    driver.get("https://www.officeworks.com.au/app/identity/create-account");
+	    File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+	    FileUtils.copyFile(screenshotFile, new File(".//screenshot/screen.png"));
 
 	    /*
 	     * How to identify a HTML input field - Step 1: Inspect the webpage, Step 2:
@@ -90,18 +92,9 @@ public class SeleniumOperations {
 	     * Take screenshot using selenium API.
 	     */
 	    // Convert WebDriver object to TakesScreenshot
-	    TakesScreenshot screenshot = (TakesScreenshot) driver;
-	    // Get screenshot as output type file
-	    File screenshotFile = screenshot.getScreenshotAs(OutputType.FILE);
-	    // Specify destination where screenshot will be saved
-	    File destinationFile = new File("C:/Users/sanju/registration_page.png");
-	    // Copy file to destination
-	    try {
-	        FileUtils.copyFile(screenshotFile, destinationFile);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-
+	    
+	   
+	  
 	    // Sleep a while
 	    sleep(2);
 
@@ -110,45 +103,72 @@ public class SeleniumOperations {
 	}
 	
 
-	    public static void alternative_registration_page(String url) {
-	        // Step 1: Locate chrome driver folder in the local drive.
-	    	System.setProperty("webdriver.chrome.driver",
-					"C:/Users/sanju/chromedriver-win64/chromedriver-win64/chromedriver.exe");
 
-	        // Step 2: Use above chrome driver to open up a chromium browser.
-	        System.out.println("Fire up chrome browser.");
-	        WebDriver driver = new ChromeDriver();
+	public static void alternative_registration_page(String url) throws IOException {
+        // Step 1: Locate chrome driver folder in the local drive.
+		System.setProperty("webdriver.chrome.driver",
+				"C:/Users/sanju/chromedriver-win64 (1)/chromedriver-win64/chromedriver.exe");
 
-	        System.out.println("Driver info: " + driver);
+	    // Step 2: Use above chrome driver to open up a chromium browser.
+	    System.out.println("Fire up chrome browser.");
+	    WebDriver driver = new ChromeDriver();
 
-	        sleep(2);
+	    System.out.println("Driver info: " + driver);
 
-	        // Load the alternative webpage in chromium browser.
-	        driver.get(url);
+	    sleep(2);
 
-	        // Locate input fields and populate with values
-	        WebElement firstNameElement = driver.findElement(By.id("first_name"));
-	        firstNameElement.sendKeys("John");
+	    // Load a webpage in chromium browser.
+	    driver.get("https://www.thegoodguys.com.au/UserRegistrationForm?new=Y&catalogId=16601&myAcctMain=&langId=-1&storeId=900");
+	    File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+	    FileUtils.copyFile(screenshotFile, new File(".//screenshot/screenss.png"));
 
-	        WebElement lastNameElement = driver.findElement(By.id("last_name"));
-	        lastNameElement.sendKeys("Doe");
 
-	        WebElement emailElement = driver.findElement(By.id("email"));
-	        emailElement.sendKeys("johndoe@example.com");
+	    // Find first input field which is firstname
+	    WebElement firstNameElement = driver.findElement(By.id("firstname"));
+	    System.out.println("Found element: " + firstNameElement);
+	    // Send first name
+	    firstNameElement.sendKeys("sanju");
 
-	        WebElement passwordElement = driver.findElement(By.id("password"));
-	        passwordElement.sendKeys("securepassword123");
+	    /*
+	     * Find following input fields and populate with values
+	     */
+	    // Find last name input field by name attribute
+	    WebElement lastNameElement = driver.findElement(By.name("lastname"));
+	    // Send last name
+	    lastNameElement.sendKeys("nimesha");
 
-	        // Example: Click on "Register" button
-	        WebElement registerButton = driver.findElement(By.id("register_button"));
-	        registerButton.click();
+	    // Find email input field by XPath
+	    WebElement emailElement = driver.findElement(By.xpath("//input[@id='email']"));
+	    // Send email
+	    emailElement.sendKeys("sanjunimesha@example.com");
 
-	        // Sleep for a while
-	        sleep(2);
+	    // Find password input field by CSS selector
+	    WebElement passwordElement = driver.findElement(By.cssSelector("input[name='password']"));
+	    // Send password
+	    passwordElement.sendKeys("sanjupassword123");
 
-	        // Close the browser
-	        driver.quit();
-	    }
-	
+	    // Find confirm password input field by XPath
+	    WebElement confirmPasswordElement = driver.findElement(By.xpath("//input[@name='confirmpassword']"));
+	    // Send confirm password
+	    confirmPasswordElement.sendKeys("sanjupassword123");
+
+	    /*
+	     * Identify button 'Create account' and click to submit using Selenium API.
+	     */
+	    WebElement createAccountButton = driver.findElement(By.id("createAccountButton"));
+	    createAccountButton.click();
+
+	    /*
+	     * Take screenshot using selenium API.
+	     */
+	    // Convert WebDriver object to TakesScreenshot
+	    
+	   
+	  
+	    // Sleep a while
+	    sleep(2);
+
+	    // close chrome driver
+	    driver.close();
+	}
 }
-
